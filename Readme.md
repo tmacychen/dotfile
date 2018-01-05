@@ -5,5 +5,5 @@
 
 - i3
 - compton
-- rofi
+- rofi (在i3目录下)
 - .vimrc
