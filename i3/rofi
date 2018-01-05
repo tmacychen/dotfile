@@ -1,0 +1,25 @@
+! "Enabled modi" Set from: Default
+rofi.modi:                           combi
+rofi.combi-modi:                     window,run
+! "Window width" Set from: Default
+rofi.width:                          80
+! "Number of lines" Set from: Default
+rofi.lines:                          25
+! "Number of columns" Set from: Default
+! rofi.columns:                        1
+! "Font to use" Set from: Default
+rofi.font:                           Dejavu Sans Mono 14
+! Use extended color scheme
+rofi.color-enabled:                  true
+! Color scheme for normal row
+rofi.color-normal:                   argb:00000000,  #D8DEE9 , argb:00000000,  #f3f99d ,  #1B2B34
+! Color scheme for urgent row
+rofi.color-urgent:                   argb:00000000,  #F99157 , argb:00000000,  #F99157 ,  #1B2B34
+! Color scheme for active row
+rofi.color-active:                   argb:00000000,  #6699CC , argb:00000000,  #6699CC ,  #1B2B34
+! Color scheme window
+rofi.color-window: argb:D0202020, #f3f99d , #f3f99d
+! "Border width" Set from: Default
+rofi.bw:                             1
+!设置位置为屏幕上方居中
+rofi.location:                       2
