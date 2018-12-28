@@ -6,4 +6,4 @@
 - i3
 - compton
 - rofi (在i3目录下)
-- .vimrc
+- vim 
