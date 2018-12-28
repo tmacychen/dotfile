@@ -1,0 +1,6 @@
+[submodule "vim/plugged/CursorLineCurrentWindow"]
+	path = vim/plugged/CursorLineCurrentWindow
+	url = https://github.com/vim-scripts/CursorLineCurrentWindow.git
+[submodule "vim/plugged/deoplete-go"]
+	path = vim/plugged/deoplete-go
+	url = https://github.com/zchee/deoplete-go.git
