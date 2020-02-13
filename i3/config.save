@@ -1,4 +1,5 @@
 # Mod4 就是win键 Mod1 是alt键
+# Mod4 就是win键 Mod1 是alt键
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
