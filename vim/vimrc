@@ -3,12 +3,16 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-sensible'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'vim-perl/vim-perl6',{'for': 'perl'}
+"Plug 'vim-perl/vim-perl6',{'for': 'perl'}
 Plug 'vim-scripts/CursorLineCurrentWindow'
 Plug 'flazz/vim-colorschemes'
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plug 'zchee/deoplete-go', { 'do': 'make'}
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'rust-lang/rust.vim'
+Plug 'Valloric/YouCompleteMe'
+Plug 'mileszs/ack.vim'
+Plug 'tpope/vim-surround'
+Plug 'cohama/lexima.vim'
+
 call plug#end()
 
 filetype plugin indent on
@@ -18,14 +22,15 @@ syntax on
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>
 endif
-nmap t<Enter> :bo sp term://fish\|resize 10<CR>i
+nmap t<Enter> :bo sp term://zsh\|resize 10<CR>i
 
 
 "外观
 set t_Co=256
 "colorscheme ron 
-"colorscheme desert 
-colorscheme jelleybeans
+""colorscheme desert 
+"colorscheme jelleybeans
+colorscheme dracula 
 "colorscheme molokai
 let g:airline_theme='luna'
 set cursorline
@@ -35,11 +40,10 @@ set cursorline
 map <F3> :NERDTreeToggle<CR>  
 set showcmd                     "显示Normal模式下按键命令
 set number
+set rnu
 set numberwidth=3               
-set nowrap                      "不要让排版适应单词，在换行出插入换行符(Insert)
+set wrap                      "不要让排版适应单词，在换行出插入换行符(Insert)
 set textwidth=0                 "同上（View)
-
-
 set wildmenu                     "增强命令补全 
 set wildmode=list:longest,full
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
@@ -83,6 +87,9 @@ set fileencodings=utf-8,gbk,gb2312
 set fileformat=unix
 set langmenu=zh_CN.UTF-8
 set helplang=cn
+
+"设置匹配括号时，另一个匹配的括号显示前景颜色为黄色"
+hi MatchParen ctermbg=Yellow
 
 " 在处理未保存或只读文件的时候，弹出确认
 set confirm
@@ -228,37 +235,36 @@ nmap tt :%s/\t/    /g<CR>"
 "":inoremap ( ()<ESC>i
 "":inoremap { {}<ESC>i
 "":inoremap [ []<ESC>i
-""
 "":inoremap ) <c-r>=ClosePair(')')<CR>
 "":inoremap } <c-r>=ClosePair('}')<CR>
 "":inoremap ] <c-r>=ClosePair(']')<CR>
 ""inoremap " <c-r>=QuoteDelim('"')<CR>
 ""inoremap ' <c-r>=QuoteDelim("'")<CR>
-""
 
-function! ClosePair(char)
-    if getline('.')[col('.') - 1] == a:char
-        return "\<Right>"
-    else
-        return a:char
-    endif
-endfunction
 
-function QuoteDelim(char)
-    let line = getline('.')
-    let col = col('.')
-    if line[col - 2] == "\\"
-        "Inserting a quoted quotation mark into the string
-        return a:char
-    elseif line[col - 1] == a:char
-        "Escaping out of the string
-        return "\<Right>"
-    else
-        "Starting a string
-        return a:char.a:char."\<Esc>i"
-    endif
-endf
+"function! ClosePair(char)
+"    if getline('.')[col('.') - 1] == a:char
+"        return "\<Right>"
+"    else
+"        return a:char
+"    endif
+"endfunction
 
+"function QuoteDelim(char)
+"    let line = getline('.')
+"    let col = col('.')
+"    if line[col - 2] == "\\"
+"        "Inserting a quoted quotation mark into the string
+"        return a:char
+"    elseif line[col - 1] == a:char
+"        "Escaping out of the string
+"        return "\<Right>"
+"    else
+"        "Starting a string
+"        return a:char.a:char."\<Esc>i"
+"    endif
+"endf
+"
 
 "C，C++ 按F5编译运行
 map <F5> :call CompileRunGcc()<CR>
@@ -276,7 +282,7 @@ func! CompileRunGcc()
     elseif &filetype == 'sh'
         :!bash %
     elseif &filetype == 'python'
-        exec "!time python2.7 %"
+        exec "!time python3 %"
     elseif &filetype == 'html'
         exec "!firefox % &"
     elseif &filetype == 'perl'
@@ -293,17 +299,25 @@ func! CompileRunGcc()
 endfunc
 
 
-" Golang real-time completion
-"
-" deoplete.nvim recommend
-set completeopt+=noselect
 
-" Path to python interpreter for neovim
-let g:python3_host_prog  = '/usr/bin/python3'
-" Skip the check of neovim module
-let g:python3_host_skip_check = 1
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#go#gocode_binary = '/home/tmacy/go/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+"Ack 搜索文件
 
+cnoreabbrev Ack Ack!
+nnoremap <Leader>a :Ack!<Space>
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep --nogroup --column'
+endif
+
+"goimport auto on save
+let g:go_fmt_command = "goimports"
+
+"Rust-lang"
+let g:rustfmt_autosave=1
+
+" lexima  自动补全括号
+" 增加<>括号
+call lexima#add_rule({'char': '<', 'input_after': '>'})
+call lexima#add_rule({'char': '>', 'at': '\%#>', 'leave': 1})
+call lexima#add_rule({'char': '<BS>', 'at': '<\%#>', 'delete': 1})
 
